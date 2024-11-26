@@ -5,6 +5,7 @@ const QRCode = require('qrcode');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
@@ -44,7 +45,7 @@ async function generatePDF(data) {
     const pdfPath = path.join(__dirname, 'output', `certificate_${Date.now()}.pdf`);
 
     // Generate QR Code for the PDF URL (Simulated link)
-    const qrCodeBase64 = await QRCode.toDataURL("http://localhost:6000");
+    const qrCodeBase64 = await QRCode.toDataURL("https://accnew.vercel.app/");
 
     // Convert images to Base64
     const leftLogoBase64 = imageToBase64(path.join(__dirname, 'assets/left-logo.png'));
@@ -204,8 +205,8 @@ async function sendEmail(recipient, customerName, attachmentPath) {
         port: 587,
         secure: false,
         auth: {
-            user: "Nintexartelco@gmail.com",
-            pass: "szjihmmiermkezuu", // App-specific password
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
         },
     });
 
